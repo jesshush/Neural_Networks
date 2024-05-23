@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from google.colab import drive
 drive.mount('/content/drive')
 
+# Reading the data in CSV using Pandas
 df = pd.read_csv('/content/drive/MyDrive/2_wheeler_related/DATASET-FINAL/Right_Deviation/ride_3.csv', parse_dates=['Time'])
 df['Time'] = df['Time'].dt.tz_localize(None)
 df.set_index('Time', inplace=True)
@@ -13,6 +14,7 @@ data = df[['Accel_X', 'Accel_Y','Accel_Z','Gyro_X', 'Gyro_Y','Gyro_Z','Yaw','Rol
 
 len(data)
 
+# Window for time series analysis
 def df_to_X_y(df, window_size=5):
     df_as_np = df.to_numpy()
     X = []
@@ -87,7 +89,7 @@ model1.compile(loss='mean_absolute_error', optimizer=Adam(learning_rate=0.001), 
 model1.summary()
 
 # Define the number of splits for time series cross-validation
-n_splits = 4  # You can adjust this based on your preference
+n_splits = 4  # Can adjust this based on your preference
 tscv = TimeSeriesSplit(n_splits=n_splits)
 mae_scores = []
 
@@ -101,9 +103,9 @@ model1.fit(X_train, y_train, epochs=50)  # Set verbose to 1 for debugging
 
 y_pred = model1.predict(X_test)
 
+# MAE values 
 mae = mean_absolute_error(y_test, y_pred)
 mae_scores.append(mae)
-
 mean_mae = np.mean(mae_scores)
 print(f"Mean Cross-Validated MAE: {mean_mae}")
 
@@ -119,6 +121,7 @@ train_predictions = model1.predict(X_train)
 train_predictions.shape
 
 num_outputs = train_predictions.shape[1]
+
 
 # Define output labels
 output_labels = ['accelerometerAccelerationX(G)', 'accelerometerAccelerationY(G)', 'accelerometerAccelerationZ(G)',
@@ -161,7 +164,7 @@ for i in range(num_outputs):
     # Create a DataFrame with predicted and actual values for the current output
     output_data = pd.DataFrame(data={'Predicted': val_predictions[:, i][:150], 'Actual': y_val[:, i][:150]})
 
-    # Plot predicted and actual values
+# Plot predicted and actual values
     plt.figure(figsize=(8, 4))
     plt.plot(output_data['Predicted'], label='Predicted')
     plt.plot(output_data['Actual'], label='Actual')
@@ -170,6 +173,7 @@ for i in range(num_outputs):
     plt.title(f'{output_labels[i]} Predicted vs Actual')
     plt.legend()
     plt.show()
+
 
 test_predictions = model1.predict(X_test)
 test_predictions.shape
@@ -186,7 +190,7 @@ for i in range(num_outputs):
     # Create a DataFrame with predicted and actual testues for the current output
     output_data = pd.DataFrame(data={'Predicted': test_predictions[:, i][:150], 'Actual': y_test[:, i][:150]})
 
-    # Plot predicted and actual testues
+# Plot predicted and actual testues
     plt.figure(figsize=(8, 4))
     plt.plot(output_data['Predicted'], label='Predicted')
     plt.plot(output_data['Actual'], label='Actual')
@@ -195,7 +199,8 @@ for i in range(num_outputs):
     plt.title(f'{output_labels[i]} Predicted vs Actual')
     plt.legend()
     plt.show()
-      # Calculate and print RMSE
+
+# Calculate and print RMSE
     output_data['Residual'] = output_data['Predicted'] - output_data['Actual']
     output_data['Squared Residual'] = np.square(output_data['Residual'])
     output_data['RMSE'] = np.sqrt(output_data['Squared Residual'])
@@ -317,10 +322,10 @@ print(f'Overall Mean Absolute Error of train: {overall_mae_train}')
 print(f'Overall Mean Absolute Error of val: {overall_mae_val}')
 print(f'Overall Mean Absolute Error of test: {overall_mae_test}')
 
-"""# TESTING
 
 
-"""
+
+# TESTING
 
 df1 = pd.read_csv('/content/drive/MyDrive/2_wheeler_related/DATASET-FINAL/Right_Deviation/ride_9.csv', parse_dates=['Time'])
 df1['lTime'] = df1['Time'].dt.tz_localize(None)
@@ -477,7 +482,7 @@ plt.show()
 
 absolute_residual_values = np.abs(all_residual_values)
 
-#Absolute of
+#Absolute 
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -508,6 +513,9 @@ anomaly_indicator = (absolute_residual_values > threshold).astype(int)
 print(anomaly_indicator)
 
 df1['Time'].shape
+
+
+
 
 import matplotlib.pyplot as plt
 
