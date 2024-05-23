@@ -123,7 +123,7 @@ train_predictions.shape
 num_outputs = train_predictions.shape[1]
 
 
-# Define output labels
+# Defining output labels
 output_labels = ['accelerometerAccelerationX(G)', 'accelerometerAccelerationY(G)', 'accelerometerAccelerationZ(G)',
                  'gyroRotationX(rad/s)', 'gyroRotationY(rad/s)', 'gyroRotationZ(rad/s)',
                  'motionYaw(rad)', 'motionRoll(rad)', 'motionPitch(rad)']
